@@ -1,16 +1,10 @@
 export default `
-  type User {
+  type Price {
     id: String!
-    name: String!
-    email: String!
+    idProduct: String!
+    price: Float!
   }
   type Query {
-    user(id: String!): User
-    users: [User]
-  }
-  type Mutation {
-    addUser(id: String!, name: String!, email: String!): User
-    editUser(id: String, name: String, email: String): User
-    deleteUser(id: String, name: String, email: String): User
+    price(idProduct: String!): [Price]
   }
 `;

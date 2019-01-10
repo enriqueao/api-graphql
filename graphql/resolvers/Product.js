@@ -1,5 +1,7 @@
 // The User schema.
-import Product from "../../../models/Product";
+import Product from "../../models/Product";
+import Price from "../../models/Prices";
+import Market from "../../models/Markets";
 
 export default {
     Query: {
@@ -26,12 +28,32 @@ export default {
         }
     },
     Mutation: {
-        addProduct: (root, { id, name, email }) => {
-            const newUser = new User({ id, name, email });
+        addProduct: (root, { format, description, upc, pic, price, market}) => {
+            const newProduct = new Product({ 
+                id: new mongoose.Types.ObjectId(), 
+                format, 
+                description,
+                upc,
+                pic 
+            });
+
+            Market.findOne({ marketName: market }, 'id', function (err, mart) {
+                err || !mart && reject(err);
+                idMarket = mart.idMarket
+            });
 
             return new Promise((resolve, reject) => {
-                newUser.save((err, res) => {
-                    err ? reject(err) : resolve(res);
+                newProduct.save((err, res) => {
+                    err && reject(err);
+                    const newPrice = new Price({
+                        id: new mongoose.Types.ObjectId(),
+                        idProduct: newProduct.id,
+                        price,
+                        idMarket
+                    });
+                    newPrice.save(function (err, res) {
+                        err ? reject(err) : resolve(res);
+                    });
                 });
             });
         }

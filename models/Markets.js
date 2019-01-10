@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Schema.Types.ObjectId;
+
 // Create the MarketSchema Schema.
 const MarketSchema = new Schema({
   id: {
-    type: Number,
+    type: String,
     required: true,
   },
   marketName: {

@@ -8,9 +8,11 @@ import cors from "cors";
 
 import schema from "./graphql/";
 
+require("dotenv").config();
+
 const app = express();
 const PORT = process.env.PORT || 4000;
-const db = "mongodb://enriqueao:arpa1996@ds047207.mlab.com:47207/enriqueao";
+const db = process.env.MONGO;
 
 // Connect to MongoDB with Mongoose.
 mongoose

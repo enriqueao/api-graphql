@@ -1,6 +1,6 @@
 export default `
   type Product {
-    id: Int!
+    id: String!
     format: String!
     description: String!
     upc: String!
@@ -11,6 +11,6 @@ export default `
     products: [Product]
   }
   type Mutation {
-    addProduct(id: Int!, format: String!, description: String!, upc: String!, pic: String!, price: Int!): Product
+    addProduct(format: String!, description: String!, upc: String!, pic: String!, price: Float!, market: String!): Product
   }
 `;

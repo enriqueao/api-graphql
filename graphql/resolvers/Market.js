@@ -1,27 +1,36 @@
 // The User schema.
-import Product from "../../../models/Product";
+import Market from "../../models/Markets";
 
 export default {
     Query: {
-        product: (root, args) => {
+        market: (root, { marketName }) => {
             return new Promise((resolve, reject) => {
-                Product.find({
-                    $or: [
-                        { description: { $regex: `.*${args.name}.*` } },
-                        { upc: { $regex: `.*${args.name}.*`} }
-                    ]
-                }).exec((err, res) => {
+                Product.findOne({ marketName }).exec((err, res) => {
                     err ? reject(err) : resolve(res);
                 });
             });
         },
-        products: () => {
+        markets: () => {
             return new Promise((resolve, reject) => {
-                Product.find({})
+                Market.find({})
                     .populate()
                     .exec((err, res) => {
                         err ? reject(err) : resolve(res);
                     });
+            });
+        }
+    },
+    Mutation: {
+        addMarket: (root, { marketName, marketLogo}) => {
+            return new Promise((resolve, reject) => {
+                const newMarket = new Market({
+                    id: new mongoose.Types.ObjectId(),
+                    marketName,
+                    marketLogo,
+                });
+                newMarket.save((err, res)=>{
+                    err ? reject(err) : resolve(res);
+                });
             });
         }
     }

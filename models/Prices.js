@@ -7,21 +7,15 @@ const Schema = mongoose.Schema;
 // Create the Product Schema.
 const PriceSchema = new Schema({
   id: {
-    type: ObjectId,
+    type: String,
     required: true,
   },
-  idProduct: {
-    type: String,
-    required: true
-  },
+  idProduct: [{ type: String, ref: 'Products' }],
   price: {
-    type: String,
+    type: mongoose.Decimal128,
     required: true
   }, 
-  idMarket: {
-    type: String,
-    required: true
-  }
+  idMarket: [{ type: String, ref: 'Markets' }]
 });
 
 const Prices = mongoose.model("Prices", PriceSchema);

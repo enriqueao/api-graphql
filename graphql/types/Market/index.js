@@ -1,14 +1,14 @@
 export default `
   type Market {
-    id: Int!
+    id: String!
     marketName: String!
     marketLogo: String!
   }
   type Query {
-    market(id: String!): Market
-    market: [Market]
+    market(name: String!): Market
+    markets: [Market]
   }
   type Mutation {
-    addMarket(id: Int!, marketName: String!, marketLogo: String!): Market
+    addMarket(marketName: String!, marketLogo: String!): Market
   }
 `;

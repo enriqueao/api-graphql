@@ -1,7 +1,9 @@
 import { mergeTypes } from "merge-graphql-schemas";
 
-import User from ".";
+import Market from "./Market";
+import Price from "./Prices";
+import Product from "./Product";
 
-const typeDefs = [User];
+const typeDefs = [Market, Price, Product];
 
 export default mergeTypes(typeDefs, { all: true });

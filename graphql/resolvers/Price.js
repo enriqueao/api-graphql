@@ -1,27 +1,16 @@
 // The User schema.
-import Product from "../../../models/Product";
+import Price from "../../models/Prices";
 
 export default {
     Query: {
-        product: (root, args) => {
+        price: (root, { idProduct }) => {
             return new Promise((resolve, reject) => {
-                Product.find({
-                    $or: [
-                        { description: { $regex: `.*${args.name}.*` } },
-                        { upc: { $regex: `.*${args.name}.*`} }
-                    ]
-                }).exec((err, res) => {
+                Price.find({ idProduct })
+                .populate("idProduct")
+                .populate("idMarket")
+                .exec((err, res) => {
                     err ? reject(err) : resolve(res);
                 });
-            });
-        },
-        products: () => {
-            return new Promise((resolve, reject) => {
-                Product.find({})
-                    .populate()
-                    .exec((err, res) => {
-                        err ? reject(err) : resolve(res);
-                    });
             });
         }
     }
