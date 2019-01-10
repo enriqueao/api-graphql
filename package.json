@@ -1,0 +1,30 @@
+{
+  "name": "learnGraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon --exec babel-node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.0.2",
+    "graphql-tools": "^4.0.3",
+    "merge-graphql-schemas": "^1.5.8",
+    "mongoose": "^5.4.0"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.2.2"
+  }
+}
