@@ -4,10 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Create the MarketSchema Schema.
 const MarketSchema = new Schema({
-  id: {
-    type: String,
-    required: true,
-  },
+  _id: Schema.Types.ObjectId,
   marketName: {
     type: String,
     required: true

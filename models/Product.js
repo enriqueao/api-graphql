@@ -5,11 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Create the Product Schema.
 const ProductSchema = new Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true
-  },
+  _id: Schema.Types.ObjectId,
   format: {
     type: String,
     required: true
@@ -22,6 +18,7 @@ const ProductSchema = new Schema({
     type: String,
     required: true
   }, 
+  prices: [{ type: Schema.Types.ObjectId, ref: 'Prices' }],
   pic: {
     type: String,
     required: true

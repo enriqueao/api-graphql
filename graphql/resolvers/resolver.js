@@ -21,20 +21,25 @@ export default {
         products: () => {
             return new Promise((resolve, reject) => {
                 Product.find({})
-                    .populate("idProduct")
-                    .populate("idMarket")
+                    .populate({
+                        path: "prices", // 1st level subdoc (get prices)
+                        populate: { // 2nd level subdoc (get market in prices)
+                            path: "market",
+                            select: 'marketName marketLogo'// space separated (selected fields only)
+                        }
+                    })  
                     .exec((err, res) => {
-                        console.log(res)
+                        console.log(res);
                         err ? reject(err) : resolve(res);
                     });
             });
         },
         price: (root, { idProduct }) => {
             return new Promise((resolve, reject) => {
-                Price.find({ idProduct })
-                    .populate("idProduct")
-                    .populate("idMarket")
+                Price.find()
+                    .populate("market")
                     .exec((err, res) => {
+                        console.log(res);
                         err ? reject(err) : resolve(res);
                     });
             });
@@ -59,37 +64,34 @@ export default {
     Mutation: {
         addProduct: (root, { format, description, upc, pic, price, market }) => {
             return new Promise((resolve, reject) => {
-                const newProduct = new Product({
-                    id: (new mongoose.Types.ObjectId()).toString(),
-                    format,
-                    description,
-                    upc,
-                    pic
-                });
-                var idMarket = "Sin definir";
-                Market.findOne({ marketName: market }, 'id', function (err, mart) {
-                    err || !mart && reject(err);
-                    console.log(mart);
-                    idMarket = mart.id.toString()
-                });
-                newProduct.save((err, res) => {
+                Market.findOne({ marketName: market }, '_id', function (err, mart) {
                     err && reject(err);
                     const newPrice = new Price({
-                        id: (new mongoose.Types.ObjectId()).toString(),
-                        idProduct: (newProduct.id).toString(),
                         price,
-                        idMarket
+                        market: mart._id
                     });
-                    newPrice.save(function (err, res) {
-                        err ? reject(err) : resolve(res);
+                    newPrice.save((err, res) => {
+                        err && reject(err);
+                        const newProduct = new Product({
+                            _id: new mongoose.Types.ObjectId(),
+                            format,
+                            description,
+                            upc,
+                            pic,
+                            prices: newPrice._id
+                        });
+                        newProduct.save(function (err, res) {
+                            err ? reject(err) : resolve(res);
+                        });
                     });
                 });
+                
             });
         },
         addMarket: (root, { marketName, marketLogo }) => {
             return new Promise((resolve, reject) => {
                 const newMarket = new Market({
-                    id: (new mongoose.Types.ObjectId()).toString(),
+                    _id: new mongoose.Types.ObjectId(),
                     marketName,
                     marketLogo,
                 });
