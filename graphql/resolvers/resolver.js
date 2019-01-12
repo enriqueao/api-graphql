@@ -10,7 +10,7 @@ export default {
             return new Promise((resolve, reject) => {
                 Product.find({
                         $or: [
-                            { description: { $regex: `.*${args.description}.*` } },
+                            { description: { $regex: new RegExp(`.*${args.description}.*`, "i") } },
                             { upc: { $regex: `.*${args.description}.*` } }
                         ]
                     })
@@ -22,7 +22,6 @@ export default {
                         }
                     })
                     .exec((err, res) => {
-                        console.log(res);
                         err ? reject(err) : resolve(res);
                     });
             });
