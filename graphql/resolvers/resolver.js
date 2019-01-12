@@ -9,13 +9,22 @@ export default {
         product: (root, args) => {
             return new Promise((resolve, reject) => {
                 Product.find({
-                    $or: [
-                        { description: { $regex: `.*${args.description}.*` } },
-                        { upc: { $regex: `.*${args.description}.*` } }
-                    ]
-                }).exec((err, res) => {
-                    err ? reject(err) : resolve(res);
-                });
+                        $or: [
+                            { description: { $regex: `.*${args.description}.*` } },
+                            { upc: { $regex: `.*${args.description}.*` } }
+                        ]
+                    })
+                    .populate({
+                        path: "prices", // 1st level subdoc (get prices)
+                        populate: { // 2nd level subdoc (get market in prices)
+                            path: "market",
+                            select: 'marketName marketLogo'// space separated (selected fields only)
+                        }
+                    })
+                    .exec((err, res) => {
+                        console.log(res);
+                        err ? reject(err) : resolve(res);
+                    });
             });
         },
         products: () => {
