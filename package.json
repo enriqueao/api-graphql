@@ -25,7 +25,8 @@
     "graphql-tools": "^4.0.3",
     "merge-graphql-schemas": "^1.5.8",
     "mongoose": "^5.4.0",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "@babel/node": "^7.2.2"
   },
   "devDependencies": {
     "@babel/node": "^7.2.2"
