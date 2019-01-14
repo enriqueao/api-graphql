@@ -14,6 +14,7 @@ export default {
                             { upc: { $regex: `.*${args.description}.*` } }
                         ]
                     })
+                    .limit(10)
                     .populate({
                         path: "prices", // 1st level subdoc (get prices)
                         populate: { // 2nd level subdoc (get market in prices)
@@ -105,6 +106,24 @@ export default {
                 });
                 newMarket.save((err, res) => {
                     err ? reject(err) : resolve(res);
+                });
+            });
+        },
+        addPriceProduct: (root, { upc, price, market }) => {
+            return new Promise((resolve, reject) => {
+                const newPrice = new Price({
+                    price,
+                    market
+                });
+                newPrice.save((err, price) => {
+                    err && reject(err);
+                    Product.findOneAndUpdate(
+                        { upc: { $regex: `.*${upc}.*` }},
+                        { $push: { prices: price._id } }, 
+                        (err, res) => {
+                            console.log(res);
+                            err ? reject(err) : resolve(res);
+                    });
                 });
             });
         }
